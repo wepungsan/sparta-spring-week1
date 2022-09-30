@@ -1,51 +1,68 @@
-public class Bus {
-    private int max_passenger;
-    private int now_passenger;
+public class Bus extends PublicTranfer {
+    private int nowPassenger;
     private int fare;
-    private int bus_no;
-    private int fuel;
-    private int now_speed;
     private String status;
 
-    public Bus(int bus_no) {
-        this.bus_no = bus_no;
+    public Bus(int no) {
+        this.no = no;
+        this.nowPassenger = 0;
+        this.maxPassenger = 30;
         this.status = "운행";
-        this.max_passenger = 50;
-        this.now_passenger = 0;
-        this.fare = 500;
+        this.fare = 1000;
         this.fuel = 100;
-        this.now_speed = 30;
+
+        System.out.println("버스 no = " + this.no);
     }
 
     public void run() {
-        this.status = "운행";
+
     }
 
-    public void checkFuel() {
-        if(this.fuel < 10) {
-            System.out.println("주유가 필요하다.");
-        } else if(this.fuel == 0) {
+    public void changeFuel(int fuel) {
+        this.fuel += fuel;
+
+        if(this.fuel <= 10) {
             this.status = "차고지행";
         }
-    }
 
-    public void stopRunning() {
-        this.status = "차고지행";
-    }
-
-    public void passengersBoard(int num) {
-        if(num < this.max_passenger && this.status.equals("운행")) {
-            this.now_passenger += num;
+        if(this.status.equals("운행")) {
+            System.out.println("주유량 = " + this.fuel);
         } else {
-            System.out.println("최대 승객수를 초과했습니다.");
+            System.out.println("상태 = " + this.status);
+            System.out.println("주유량 = " + this.fuel);
+
+            if(this.fuel <= 10) {
+                System.out.println("주유 필요");
+            }
         }
     }
 
     public void changeSpeed(int speed) {
-        if(this.fuel >= 10) {
-            this.now_speed += speed;
+        if(this.fuel <= 10) {
+            System.out.println("주유량을 확인해 주세요");
         } else {
-            System.out.println("주유량을 확인해주세요");
+            this.speed += speed;
         }
+    }
+
+    public void changeStatus() {
+        if(this.status.equals("운행")) {
+            this.status = "차고지행";
+            this.nowPassenger = 0;
+        } else {
+            this.status = "운행";
+        }
+    }
+
+    public void boardPassenger(int passengerNum) {
+        if(this.status.equals("운행") && this.nowPassenger <= this.maxPassenger) {
+            this.nowPassenger += passengerNum;
+        } else {
+            System.out.println("최대 승객 수 초과");
+        }
+
+        System.out.println("탑승 승객 수 = " + this.nowPassenger);
+        System.out.println("잔여 승객 수 = " + (this.maxPassenger - this.nowPassenger));
+        System.out.println("요금 확인 = " + (this.nowPassenger*this.fare));
     }
 }
